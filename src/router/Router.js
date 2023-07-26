@@ -10,6 +10,8 @@ import SignIn from '../shared/react/SignIn';
 import SignUp from '../shared/react/SignUp';
 import Verify2FA from '../shared/react/Verify2FA';
 import Account from '../views/Account';
+import Encryption from '../views/Encryption';
+import Privacy from '../views/Privacy';
 import Welcome from '../views/Welcome';
 
 function Router({ isCheckingRefreshToken, isLoggedIn }) {
@@ -29,6 +31,9 @@ function Router({ isCheckingRefreshToken, isLoggedIn }) {
         <Route path="/security/2fa" component={Setup2FA} />
         <Route path="/security/password" component={ChangePassword} />
 
+        <Route path="/encryption" component={Encryption} />
+        <Route path="/privacy" component={Privacy} />
+
         <Route path="/" component={Account} />
         <Route>{() => <Redirect to="/" />}</Route>
       </Switch>
@@ -40,6 +45,9 @@ function Router({ isCheckingRefreshToken, isLoggedIn }) {
       <Route path="/sign-up" component={SignUp} />
       <Route path="/sign-in" component={SignIn} />
       <Route path="/sign-in/2fa" component={Verify2FA} />
+
+      <Route path="/encryption" component={Encryption} />
+      <Route path="/privacy" component={Privacy} />
 
       <Route path="/" component={Welcome} />
       <Route>{() => <Redirect to="/" />}</Route>

@@ -38,23 +38,9 @@ function Home({ account, isLoadingAccount }) {
             <Spacer />
             <Divider />
             <Spacer />
-            <RouteLink label="Motivation" to="/motivation" />
-            <Spacer />
-            <RouteLink label="How it works?" to="/how" />
-            <Spacer />
-            <RouteLink label="Limitations" to="/limitations" />
-            <Spacer />
             <RouteLink label="How encryption works?" to="/encryption" />
             <Spacer />
-            <RouteLink label="How to find selector?" to="/selector" />
-            <Spacer />
-            <RouteLink label="Pricing" to="/pricing" />
-            <Spacer />
-            <RouteLink label="Buy tickets" to="/tickets" />
-            <Spacer />
             <RouteLink label="Privacy" to="/privacy" />
-            <Spacer />
-            <RouteLink label="Terms" to="/terms" />
             <Spacer />
             <Anchor label="Contact" href="https://www.peng.kiwi/contact" target="_blank" />
             <Spacer />

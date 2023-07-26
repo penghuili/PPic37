@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@tiptap/extension-typography": "2.0.4",
+    "@tiptap/pm": "2.0.4",
+    "@tiptap/react": "2.0.4",
+    "@tiptap/starter-kit": "2.0.4",
     "axios": "0.27.2",
     "copy-to-clipboard": "3.3.3",
     "date-fns": "2.29.3",
@@ -10,6 +14,7 @@
     "grommet": "2.31.0",
     "grommet-icons": "4.10.0",
     "jwt-decode": "3.1.2",
+    "lodash.uniqby": "4.7.0",
     "openpgp": "5.5.0",
     "qrcode.react": "3.1.0",
     "react": "18.2.0",
