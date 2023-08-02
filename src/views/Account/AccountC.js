@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import sharedSelectors from '../../shared/react/store/sharedSelectors';
 import Account from './Account';
+import { sharedActionCreators } from '../../shared/react/store/sharedActions';
 
 const mapStateToProps = state => ({
   account: sharedSelectors.getAccount(state),
