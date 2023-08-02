@@ -9,6 +9,8 @@ const mapStateToProps = state => ({
   isLoadingAccount: sharedSelectors.isLoadingAccount(state),
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  onLogOut: sharedActionCreators.logOutPressed,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);
