@@ -7,7 +7,7 @@ import AppBar from '../../shared/react/AppBar';
 function Encryption() {
   return (
     <>
-      <AppBar title="How encryption works in Often37?" hasBack />
+      <AppBar title="How encryption works in Starter37?" hasBack />
       <ContentWrapper>
         <Text margin="3rem 0 0">
           Watcher37 uses the famous{' '}
