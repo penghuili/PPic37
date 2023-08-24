@@ -1,6 +1,8 @@
-import { Anchor, Box, Text } from 'grommet';
+import { Box, Text } from 'grommet';
 import React from 'react';
 
+import ProfilePic from '../../components/ProfilePic';
+import { formatDateWeekTime } from '../../shared/js/date';
 import ContentWrapper from '../../shared/react-pure/ContentWrapper';
 import Divider from '../../shared/react-pure/Divider';
 import HorizontalCenter from '../../shared/react-pure/HorizontalCenter';
@@ -8,11 +10,9 @@ import Spacer from '../../shared/react-pure/Spacer';
 import AppBar from '../../shared/react/AppBar';
 import { useEffectOnce } from '../../shared/react/hooks/useEffectOnce';
 import RouteLink from '../../shared/react/RouteLink';
-import ProfilePic from '../../components/ProfilePic';
 import TextEditor from '../../shared/react/TextEditor';
-import { formatDateWeekTime } from '../../shared/js/date';
 
-function Pics({ pics, isLoading, isDeleting, onFetch, onDelete }) {
+function Pics({ pics, isLoading, isDeleting, onFetch }) {
   useEffectOnce(() => {
     onFetch();
   });
@@ -36,21 +36,8 @@ function Pics({ pics, isLoading, isDeleting, onFetch, onDelete }) {
                 <RouteLink
                   to={`/pics/${pic.sortKey}/update`}
                   label="Edit"
-                  color="status-ok"
                   size="small"
                   margin="0 1rem 0 0"
-                />
-                <Anchor
-                  label="Delete"
-                  color="status-critical"
-                  size="small"
-                  disabled={isDeleting}
-                  onClick={() => {
-                    onDelete({
-                      itemId: pic.sortKey,
-                      pic,
-                    });
-                  }}
                 />
               </Box>
               <Spacer />

@@ -13,7 +13,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   onFetch: picActions.fetchItemsRequested,
-  onDelete: picActions.deleteRequested,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Pics);

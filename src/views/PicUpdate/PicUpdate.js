@@ -1,4 +1,4 @@
-import { Button, Text } from 'grommet';
+import { Box, Button, Text } from 'grommet';
 import React, { useState } from 'react';
 
 import ProfilePic from '../../components/ProfilePic';
@@ -9,7 +9,7 @@ import { useEffectOnce } from '../../shared/react/hooks/useEffectOnce';
 import { useListener } from '../../shared/react/hooks/useListener';
 import TextEditor from '../../shared/react/TextEditor';
 
-function PicUpdate({ picId, pic, isLoading, isUpdating, onUpdate, onFetch }) {
+function PicUpdate({ picId, pic, isLoading, isUpdating, onUpdate, onFetch, onDelete }) {
   const [note, setNote] = useState('');
   useListener(pic?.note, value => setNote(value || ''));
 
@@ -30,17 +30,32 @@ function PicUpdate({ picId, pic, isLoading, isUpdating, onUpdate, onFetch }) {
             <TextEditor text={note} onChange={setNote} />
             <Spacer />
 
-            <Button
-              label="Update profile pic"
-              onClick={() => {
-                onUpdate({
-                  itemId: picId,
-                  note,
-                  goBack: true,
-                });
-              }}
-              disabled={isLoading || isUpdating}
-            />
+            <Box direction="row" justify="between" width="100%">
+              <Button
+                label="Update profile pic"
+                onClick={() => {
+                  onUpdate({
+                    itemId: picId,
+                    note,
+                    goBack: true,
+                  });
+                }}
+                disabled={isLoading || isUpdating}
+              />
+
+              <Button
+                label="Delete"
+                onClick={() => {
+                  onDelete({
+                    itemId: pic.sortKey,
+                    pic,
+                  });
+                }}
+                disabled={isLoading || isUpdating}
+                color="status-critical"
+                primary
+              />
+            </Box>
           </>
         )}
       </ContentWrapper>
