@@ -1,8 +1,8 @@
 import { all } from 'redux-saga/effects';
 
 import { sharedSagas } from '../shared/react/store/sharedSaga';
-import { testSagas } from './test/testSagas';
+import { picSagas } from './pic/picStore';
 
 export function* sagas() {
-  yield all([sharedSagas(), testSagas()]);
+  yield all([sharedSagas(), picSagas()]);
 }

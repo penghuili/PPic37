@@ -17,7 +17,7 @@ function Welcome() {
         <HorizontalCenter margin="2rem 0 1rem">
           <Avatar src={logo} />{' '}
           <Heading level="2" margin="0 0 0 1rem">
-            Init37
+            PPic37
           </Heading>
         </HorizontalCenter>
         <Pitch />

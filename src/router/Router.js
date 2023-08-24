@@ -11,6 +11,9 @@ import SignUp from '../shared/react/SignUp';
 import Verify2FA from '../shared/react/Verify2FA';
 import Account from '../views/Account';
 import Encryption from '../views/Encryption';
+import PicAdd from '../views/PicAdd';
+import Pics from '../views/Pics';
+import PicUpdate from '../views/PicUpdate';
 import Privacy from '../views/Privacy';
 import Welcome from '../views/Welcome';
 
@@ -26,7 +29,11 @@ function Router({ isCheckingRefreshToken, isLoggedIn }) {
   if (isLoggedIn) {
     return (
       <Switch>
-         <Route path="/account" component={Account} />
+        <Route path="/pics/add" component={PicAdd} />
+        <Route path="/pics/:picId/update" component={PicUpdate} />
+        <Route path="/pics" component={Pics} />
+
+        <Route path="/account" component={Account} />
         <Route path="/security" component={Security} />
         <Route path="/security/2fa" component={Setup2FA} />
         <Route path="/security/password" component={ChangePassword} />
@@ -34,7 +41,7 @@ function Router({ isCheckingRefreshToken, isLoggedIn }) {
         <Route path="/encryption" component={Encryption} />
         <Route path="/privacy" component={Privacy} />
 
-        <Route path="/" component={Account} />
+        <Route path="/" component={Pics} />
         <Route>{() => <Redirect to="/" />}</Route>
       </Switch>
     );

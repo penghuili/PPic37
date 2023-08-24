@@ -7,10 +7,10 @@ import AppBar from '../../shared/react/AppBar';
 function Encryption() {
   return (
     <>
-      <AppBar title="How encryption works in Starter37?" hasBack />
+      <AppBar title="How encryption works in PPic37?" hasBack />
       <ContentWrapper>
         <Text margin="3rem 0 0">
-          Watcher37 uses the famous{' '}
+          PPic37 uses the famous{' '}
           <Anchor label="openpgpjs" href="https://github.com/openpgpjs/openpgpjs" target="_blank" />{' '}
           algorithm (used by <Anchor label="Proton" href="https://proton.me/" target="_blank" />) to
           do the end-to-end encryption. See what is PGP{' '}

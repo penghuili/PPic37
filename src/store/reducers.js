@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
 import { sharedReducer } from '../shared/react/store/sharedReducer';
-import { testReducer } from './test/testReducer';
+import { picDomain, picReducer } from './pic/picStore';
 
 export const reducers = combineReducers({
   shared: sharedReducer,
-  test: testReducer,
+  [picDomain]: picReducer
 });
