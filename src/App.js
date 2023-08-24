@@ -16,12 +16,12 @@ import initShared from './shared/react/initShared';
 import Toast from './shared/react/Toast';
 import store from './store';
 
-initShared({ logo, app: apps.watcher37.name });
+initShared({ logo, app: apps.ppic37.name });
 
 setHook('location', useLocation);
 setHook('dispatch', useDispatch);
 
-const theme = createTheme('#e8751a');
+const theme = createTheme(apps.ppic37.color);
 
 function App() {
   return (
