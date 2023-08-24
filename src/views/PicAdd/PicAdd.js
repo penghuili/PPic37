@@ -13,6 +13,15 @@ function PicAdd({ isCreating, onCreate, onToast }) {
   const [date, setDate] = useState(null);
   const [note, setNote] = useState('');
 
+  function isImage(selectedFile) {
+    console.log(selectedFile.type);
+    return selectedFile.type.startsWith('image/');
+  }
+
+  function isTooLarge(selectedFile) {
+    return selectedFile.size > FILE_LIMIT;
+  }
+
   return (
     <>
       <AppBar title="Add friend" hasBack />
@@ -22,22 +31,24 @@ function PicAdd({ isCreating, onCreate, onToast }) {
           multiple={false}
           maxSize={FILE_LIMIT}
           onChange={async event => {
-            const file = event.target.files[0];
-            if (!file) {
+            const selected = event.target.files[0];
+            if (!selected) {
               return;
             }
 
-            if (file.size > FILE_LIMIT) {
+            if (!isImage(selected)) {
+              onToast(`Please select an image.`);
+            } else if (isTooLarge(selected)) {
               onToast(
                 `File size limit is ${FILE_LIMIT / 1024 / 1024}MB, please select a smaller file.`
               );
             } else {
-              setFile(file);
+              setFile(selected);
             }
           }}
           renderFile={file => (
             <Text margin="0 0 0 1rem">
-              {file.size > FILE_LIMIT ? "Drop file here or" : file.name}
+              {!isImage(file) || isTooLarge(file) ? 'Drop file here or' : file.name}
             </Text>
           )}
         />
