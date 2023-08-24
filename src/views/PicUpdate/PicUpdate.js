@@ -9,7 +9,7 @@ import { useEffectOnce } from '../../shared/react/hooks/useEffectOnce';
 import { useListener } from '../../shared/react/hooks/useListener';
 import TextEditor from '../../shared/react/TextEditor';
 
-function PicUpdate({ picId, pic, isLoading, isUpdating, onUpdate, onFetch, onDelete }) {
+function PicUpdate({ picId, pic, isLoading, isUpdating, isDeleting, onUpdate, onFetch, onDelete }) {
   const [note, setNote] = useState('');
   useListener(pic?.note, value => setNote(value || ''));
 
@@ -19,7 +19,7 @@ function PicUpdate({ picId, pic, isLoading, isUpdating, onUpdate, onFetch, onDel
 
   return (
     <>
-      <AppBar title="Update friend" hasBack isLoading={isLoading || isUpdating} />
+      <AppBar title="Update friend" hasBack isLoading={isLoading || isUpdating || isDeleting} />
       <ContentWrapper>
         {!!pic && (
           <>
@@ -49,9 +49,10 @@ function PicUpdate({ picId, pic, isLoading, isUpdating, onUpdate, onFetch, onDel
                   onDelete({
                     itemId: pic.sortKey,
                     pic,
+                    goBack: true,
                   });
                 }}
-                disabled={isLoading || isUpdating}
+                disabled={isLoading || isDeleting}
                 color="status-critical"
                 primary
               />

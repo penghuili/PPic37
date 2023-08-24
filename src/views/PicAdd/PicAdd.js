@@ -14,7 +14,6 @@ function PicAdd({ isCreating, onCreate, onToast }) {
   const [note, setNote] = useState('');
 
   function isImage(selectedFile) {
-    console.log(selectedFile.type);
     return selectedFile.type.startsWith('image/');
   }
 

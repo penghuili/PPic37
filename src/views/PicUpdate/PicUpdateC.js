@@ -8,6 +8,7 @@ const mapStateToProps = (state, { params: { picId } }) => ({
   pic: picSelectors.data.getItem(state, undefined, picId),
   isLoading: picSelectors.fetchItems.isPending(state),
   isUpdating: picSelectors.updateItem.isPending(state),
+  isDeleting: picSelectors.deleteItem.isPending(state),
 });
 
 const mapDispatchToProps = {
