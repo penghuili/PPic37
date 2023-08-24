@@ -1,14 +1,15 @@
 import { Button, FileInput, Image, Text } from 'grommet';
 import React, { useState } from 'react';
 
+import { FILE_LIMIT } from '../../lib/constants';
 import ContentWrapper from '../../shared/react-pure/ContentWrapper';
+import DatePicker from '../../shared/react-pure/DatePicker';
 import Spacer from '../../shared/react-pure/Spacer';
 import AppBar from '../../shared/react/AppBar';
 import TextEditor from '../../shared/react/TextEditor';
-import DatePicker from '../../shared/react-pure/DatePicker';
 
-function PicAdd({ isCreating, onCreate }) {
-  const [file, SetFile] = useState(null);
+function PicAdd({ isCreating, onCreate, onToast }) {
+  const [file, setFile] = useState(null);
   const [date, setDate] = useState(null);
   const [note, setNote] = useState('');
 
@@ -19,10 +20,26 @@ function PicAdd({ isCreating, onCreate }) {
         <Text weight="bold">Choose your profile pic</Text>
         <FileInput
           multiple={false}
+          maxSize={FILE_LIMIT}
           onChange={async event => {
             const file = event.target.files[0];
-            SetFile(file);
+            if (!file) {
+              return;
+            }
+
+            if (file.size > FILE_LIMIT) {
+              onToast(
+                `File size limit is ${FILE_LIMIT / 1024 / 1024}MB, please select a smaller file.`
+              );
+            } else {
+              setFile(file);
+            }
           }}
+          renderFile={file => (
+            <Text margin="0 0 0 1rem">
+              {file.size > FILE_LIMIT ? "Drop file here or" : file.name}
+            </Text>
+          )}
         />
         <Spacer />
 
