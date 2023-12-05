@@ -13,6 +13,7 @@ function PicUpdate({ picId, pic, isLoading, isUpdating, isDeleting, onUpdate, on
   const [note, setNote] = useState('');
   useListener(pic?.note, value => setNote(value || ''));
 
+
   useEffectOnce(() => {
     onFetch();
   });

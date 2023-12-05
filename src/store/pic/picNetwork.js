@@ -1,6 +1,5 @@
-import axios from 'axios';
-
 import apps from '../../shared/js/apps';
+import asyncForEach from '../../shared/js/asyncForEach';
 import {
   decryptMessage,
   decryptMessageSymmetric,
@@ -10,24 +9,23 @@ import {
 import generatePassword from '../../shared/js/generatePassword';
 import { LocalStorage, sharedLocalStorageKeys } from '../../shared/js/LocalStorage';
 import HTTP from '../../shared/react/HTTP';
-import { decryptFile, encryptFile } from './encryptFile';
-import asyncForEach from '../../shared/js/asyncForEach';
+import { CHUNK_SIZE, decryptFile, encryptFile } from './encryptFile';
 
-async function fetchUrlForUpload() {
+async function fetchUrlsForUpload(count) {
   try {
-    const { url, fileId } = await HTTP.get(apps.file37.name, `/v1/upload-url`);
+    const { urls, fileId } = await HTTP.get(apps.file37.name, `/v1/upload-url?count=${count}`);
 
-    return { data: { url, fileId }, error: null };
+    return { data: { urls, fileId }, error: null };
   } catch (error) {
     return { data: null, error };
   }
 }
 
-async function fetchUrlForDownload(fileId) {
+async function fetchUrlsForDownload(fileId) {
   try {
-    const { url } = await HTTP.get(apps.file37.name, `/v1/download-url/${fileId}`);
+    const { urls } = await HTTP.get(apps.file37.name, `/v1/download-url/${fileId}`);
 
-    return { data: url, error: null };
+    return { data: urls, error: null };
   } catch (error) {
     return { data: null, error };
   }
@@ -35,20 +33,24 @@ async function fetchUrlForDownload(fileId) {
 
 export async function uploadFile(file) {
   try {
+    const count = Math.ceil(file.size / CHUNK_SIZE);
     const {
-      data: { url, fileId },
-    } = await fetchUrlForUpload();
-    const password = generatePassword(20, true);
-    const encryptedFile = await encryptFile(file, password);
+      data: { urls, fileId },
+    } = await fetchUrlsForUpload(count);
 
-    await axios.put(url, encryptedFile, {
-      headers: {
-        'Content-Type': 'application/octet-stream',
-      },
-      onUploadProgress: progressEvent => {
-        let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-        console.log(percentCompleted);
-      },
+    const password = generatePassword(20, true);
+
+    await asyncForEach(urls, async (url, index) => {
+      const chunk = file.slice(index * CHUNK_SIZE, (index + 1) * CHUNK_SIZE);
+      const encryptedChunk = await encryptFile(chunk, password);
+
+      await fetch(url, {
+        method: 'PUT',
+        body: encryptedChunk,
+        headers: {
+          'Content-Type': 'application/octet-stream',
+        },
+      });
     });
 
     const encryptedFileName = await encryptMessageSymmetric(password, file.name);
@@ -60,18 +62,20 @@ export async function uploadFile(file) {
       fileId,
       password: encryptedPassword,
       fileName: encryptedFileName,
+      count,
       mimeType: file.type,
       size: file.size,
     });
     return { data: { ...data, encryptedPassword, password }, error: null };
   } catch (error) {
+    console.log('uploadFile error', error);
     return { data: null, error };
   }
 }
 
 export async function downloadFile(fileId) {
   try {
-    const { data: url } = await fetchUrlForDownload(fileId);
+    const { data: urls } = await fetchUrlsForDownload(fileId);
 
     const fileMeta = await HTTP.get(apps.file37.name, `/v1/files/${fileId}`);
     const decryptedPassword = await decryptMessage(
@@ -79,10 +83,19 @@ export async function downloadFile(fileId) {
       fileMeta.password
     );
 
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
-    const encryptedData = new Uint8Array(response.data);
-    const decryptedFile = await decryptFile(encryptedData, decryptedPassword);
-    const blob = new Blob([decryptedFile], { type: fileMeta.mimeType });
+    const { writable, readable } = new TransformStream();
+    const writer = writable.getWriter();
+    await asyncForEach(urls, async url => {
+      const buffer = await fetch(url).then(response => response.arrayBuffer());
+      const chunk = new Uint8Array(buffer);
+      const decryptedChunk = await decryptFile(chunk, decryptedPassword);
+      writer.write(new Uint8Array(decryptedChunk));
+    });
+
+    writer.close();
+
+    const blob = await new Response(readable).blob();
+
     const objectUrl = URL.createObjectURL(blob);
 
     return { data: { url: objectUrl, fileName: fileMeta.fileName }, error: null };

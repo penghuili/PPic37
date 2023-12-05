@@ -6,6 +6,7 @@ import ContentWrapper from '../../shared/react-pure/ContentWrapper';
 import DatePicker from '../../shared/react-pure/DatePicker';
 import Spacer from '../../shared/react-pure/Spacer';
 import AppBar from '../../shared/react/AppBar';
+import { toastTypes } from '../../shared/react/store/sharedReducer';
 import TextEditor from '../../shared/react/TextEditor';
 
 function PicAdd({ isCreating, onCreate, onToast }) {
@@ -35,11 +36,12 @@ function PicAdd({ isCreating, onCreate, onToast }) {
               return;
             }
 
-            if (!isImage(selected)) {
-              onToast(`Please select an image.`);
+            if (!isImage(selected.type)) {
+              onToast(`Please select an image.`, toastTypes.critical);
             } else if (isTooLarge(selected)) {
               onToast(
-                `File size limit is ${FILE_LIMIT / 1024 / 1024}MB, please select a smaller file.`
+                `File size limit is ${FILE_LIMIT / 1024 / 1024}MB, please select a smaller file.`,
+                toastTypes.critical
               );
             } else {
               setFile(selected);
@@ -47,7 +49,7 @@ function PicAdd({ isCreating, onCreate, onToast }) {
           }}
           renderFile={file => (
             <Text margin="0 0 0 1rem">
-              {!isImage(file) || isTooLarge(file) ? 'Drop file here or' : file.name}
+              {!isImage(file.type) || isTooLarge(file) ? 'Drop file here or' : file.name}
             </Text>
           )}
         />
@@ -65,7 +67,7 @@ function PicAdd({ isCreating, onCreate, onToast }) {
 
         <Button
           label="Add profile pic"
-          onClick={() => {
+          onClick={async () => {
             onCreate({
               file,
               date: date ? date.getTime() : undefined,

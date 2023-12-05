@@ -24,7 +24,7 @@
     "lodash.get": "4.4.2",
     "lodash.set": "4.3.2",
     "lodash.uniqby": "4.7.0",
-    "openpgp": "5.5.0",
+    "openpgp": "5.9.0",
     "patch-package": "7.0.2",
     "qrcode.react": "3.1.0",
     "react": "18.2.0",
